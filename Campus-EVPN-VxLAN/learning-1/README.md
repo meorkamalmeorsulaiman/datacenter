@@ -118,31 +118,29 @@ We create the underlay bgp group and also include bfd which is optional. Further
 core01
 
 ```
-set protocols bgp group UNDERLAY type internal
-set protocols bgp group UNDERLAY description "Connection for Underlay - BGP"
+set protocols bgp group UNDERLAY type external
+set protocols bgp group UNDERLAY description "Underlay BGP"
 set protocols bgp group UNDERLAY import UNDERLAY_IMPORT
 set protocols bgp group UNDERLAY family inet unicast
 set protocols bgp group UNDERLAY export UNDERLAY_EXPORT
-set protocols bgp group UNDERLAY bfd-liveness-detection minimum-interval 350
-set protocols bgp group UNDERLAY bfd-liveness-detection multiplier 3
+set protocols bgp group UNDERLAY local-as 65501
 set protocols bgp group UNDERLAY multipath multiple-as
-set protocols bgp group UNDERLAY neighbor 10.10.0.2 peer-as 65500
-set protocols bgp group UNDERLAY neighbor 10.10.0.6 peer-as 65500
+set protocols bgp group UNDERLAY neighbor 10.10.1.2 peer-as 65502
+set protocols bgp group UNDERLAY neighbor 10.10.1.6 peer-as 65502
 ```
 
 core02 
 
 ```
-set protocols bgp group UNDERLAY type internal
-set protocols bgp group UNDERLAY description "Connection for Underlay - BGP"
+set protocols bgp group UNDERLAY type external
+set protocols bgp group UNDERLAY description Underlay_BGP
 set protocols bgp group UNDERLAY import UNDERLAY_IMPORT
 set protocols bgp group UNDERLAY family inet unicast
 set protocols bgp group UNDERLAY export UNDERLAY_EXPORT
-set protocols bgp group UNDERLAY bfd-liveness-detection minimum-interval 350
-set protocols bgp group UNDERLAY bfd-liveness-detection multiplier 3
+set protocols bgp group UNDERLAY local-as 65502
 set protocols bgp group UNDERLAY multipath multiple-as
-set protocols bgp group UNDERLAY neighbor 10.10.0.1 peer-as 65500
-set protocols bgp group UNDERLAY neighbor 10.10.0.5
+set protocols bgp group UNDERLAY neighbor 10.10.1.1 peer-as 65501
+set protocols bgp group UNDERLAY neighbor 10.10.1.5 peer-as 65501
 ```
 
 Once commited, validate that the peering are established
