@@ -8,7 +8,7 @@ This would be the labs for EVPN-VxLAN implementation for enterprise campus netwo
 
 The lab would required an Junos vQFX switches. Below is the lab environment setup
 
-![Lab campus evpn](https://github.com/meorkamalmeorsulaiman/DC-Tech/blob/Campus-EVPN-VxLAN/Campus-EVPN-VxLAN/diagrams/Collapse%20Core%20Lab.png)
+![Lab campus evpn](https://github.com/meorkamalmeorsulaiman/datacenter/blob/learning-1/Campus-EVPN-VxLAN/diagrams/learning-1-lab.PNG)
 
 ## Building the Underlay
 
