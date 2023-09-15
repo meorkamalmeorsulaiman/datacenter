@@ -97,7 +97,7 @@ We set the router IDs, AS and turning on ECMP
 core01
 
 ```
-set routing-options router-id 10.10.1.1
+set routing-options router-id 10.10.0.1
 set routing-options autonomous-system 65500
 set routing-options forwarding-table export ECMP_POLICY
 
@@ -106,7 +106,7 @@ set routing-options forwarding-table export ECMP_POLICY
 core02
 
 ```
-set routing-options router-id 10.10.1.2
+set routing-options router-id 10.10.0.2
 set routing-options autonomous-system 65500
 set routing-options forwarding-table export ECMP_POLICY
 ```
