@@ -19,45 +19,45 @@ The lab would required an Junos vQFX switches. Below is the lab environment setu
 core01
 
 ```
-root@core01# show interfaces xe-0/0/10 | display set 
+root@core01> show configuration interfaces xe-0/0/10 | display set 
 set interfaces xe-0/0/10 description "Connected to core02"
 set interfaces xe-0/0/10 mtu 9216
-set interfaces xe-0/0/10 unit 0 family inet address 10.10.0.1/30
+set interfaces xe-0/0/10 unit 0 family inet address 10.10.1.1/30
 
-{master:0}[edit]
-root@core01# show interfaces xe-0/0/11 | display set    
+{master:0}
+root@core01> show configuration interfaces xe-0/0/11 | display set    
 set interfaces xe-0/0/11 description "Connected to core02"
 set interfaces xe-0/0/11 mtu 9216
-set interfaces xe-0/0/11 unit 0 family inet address 10.10.0.5/30
+set interfaces xe-0/0/11 unit 0 family inet address 10.10.1.5/30
 
-{master:0}[edit]
-root@core01# show interfaces lo0 | display set 
-set interfaces lo0 unit 0 family inet address 10.10.1.1/32
+{master:0}
+root@core01> show configuration interfaces lo0 | display set 
+set interfaces lo0 unit 0 family inet address 10.10.0.1/32
 
-{master:0}[edit]
-root@core01# 
+{master:0}
+root@core01> 
 ```
 
 core02
 
 ```
-root@core02# show interfaces xe-0/0/10 | display set 
+root@core02> show configuration interfaces xe-0/0/10 | display set 
 set interfaces xe-0/0/10 description "Connected to core01"
 set interfaces xe-0/0/10 mtu 9216
-set interfaces xe-0/0/10 unit 0 family inet address 10.10.0.2/30
+set interfaces xe-0/0/10 unit 0 family inet address 10.10.1.2/30
 
-{master:0}[edit]
-root@core02# show interfaces xe-0/0/11 | display set    
+{master:0}
+root@core02> show configuration interfaces xe-0/0/11 | display set    
 set interfaces xe-0/0/11 description "Connected to core01"
 set interfaces xe-0/0/11 mtu 9216
-set interfaces xe-0/0/11 unit 0 family inet address 10.10.0.6/30
+set interfaces xe-0/0/11 unit 0 family inet address 10.10.1.6/30
 
-{master:0}[edit]
-root@core02# show interfaces lo0 | display set 
-set interfaces lo0 unit 0 family inet address 10.10.1.2/32
+{master:0}
+root@core02> show configuration interfaces lo0 | display set 
+set interfaces lo0 unit 0 family inet address 10.10.0.2/32
 
-{master:0}[edit]
-root@core02# 
+{master:0}
+root@core02> 
 ```
 
 ### The Underlay ECMP and route filters
@@ -69,10 +69,10 @@ core01
 ```
 set policy-options policy-statement ECMP_POLICY then load-balance per-packet
 set policy-options policy-statement ECMP_POLICY then accept
-set policy-options policy-statement UNDERLAY_IMPORT term LOOPBACK from route-filter 10.10.1.2/32 exact
+set policy-options policy-statement UNDERLAY_IMPORT term LOOPBACK from route-filter 10.10.0.2/32 exact
 set policy-options policy-statement UNDERLAY_IMPORT term LOOPBACK then accept
 set policy-options policy-statement UNDERLAY_IMPORT term DEFAULT then reject
-set policy-options policy-statement UNDERLAY_EXPORT term LOOPBACK from route-filter 10.10.1.1/32 exact
+set policy-options policy-statement UNDERLAY_EXPORT term LOOPBACK from route-filter 10.10.0.1/32 exact
 set policy-options policy-statement UNDERLAY_EXPORT term LOOPBACK then accept
 set policy-options policy-statement UNDERLAY_EXPORT term DEFAULT then reject
 ```
@@ -82,10 +82,10 @@ core02
 ```
 set policy-options policy-statement ECMP_POLICY then load-balance per-packet
 set policy-options policy-statement ECMP_POLICY then accept
-set policy-options policy-statement UNDERLAY_IMPORT term LOOPBACK from route-filter 10.10.1.1/32 exact
+set policy-options policy-statement UNDERLAY_IMPORT term LOOPBACK from route-filter 10.10.0.1/32 exact
 set policy-options policy-statement UNDERLAY_IMPORT term LOOPBACK then accept
 set policy-options policy-statement UNDERLAY_IMPORT term DEFAULT then reject
-set policy-options policy-statement UNDERLAY_EXPORT term LOOPBACK from route-filter 10.10.1.2/32 exact
+set policy-options policy-statement UNDERLAY_EXPORT term LOOPBACK from route-filter 10.10.0.2/32 exact
 set policy-options policy-statement UNDERLAY_EXPORT term LOOPBACK then accept
 set policy-options policy-statement UNDERLAY_EXPORT term DEFAULT then reject
 ```
