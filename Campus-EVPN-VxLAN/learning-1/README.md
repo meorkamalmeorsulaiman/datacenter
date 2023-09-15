@@ -113,7 +113,7 @@ set routing-options forwarding-table export ECMP_POLICY
 
 ### The iBGP Configuration
 
-We create the underlay bgp group and also include bfd which is optional. Furthermore, we have a 2 point-to-point links between the switches thus we also going to establish 2 session between the pair.
+We create the underlay bgp group. Furthermore, we have a 2 point-to-point links between the switches thus we also going to establish 2 session between the pair.
 
 core01
 
@@ -148,54 +148,34 @@ Once commited, validate that the peering are established
 core01
 
 ```
-root@core01# run show bgp summary group UNDERLAY      
+root@core01> show bgp summary 
 Groups: 1 Peers: 2 Down peers: 0
 Table          Tot Paths  Act Paths Suppressed    History Damp State    Pending
 inet.0               
                        2          2          0          0          0          0
 Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn State|#Active/Received/Accepted/Damped...
-10.10.0.2             65500         64         63       0       0       27:10 1/1/1/0              0/0/0/0
-10.10.0.6             65500         53         52       0       0       22:56 1/1/1/0              0/0/0/0
+10.10.1.2             65502         12         11       0       1        4:10 1/1/1/0              0/0/0/0
+10.10.1.6             65502         12         11       0       1        4:06 1/1/1/0              0/0/0/0
 
-{master:0}[edit]
-root@core01# run show bfd session brief 
-                                                  Detect   Transmit
-Address                  State     Interface      Time     Interval  Multiplier
-10.10.0.2                Up        xe-0/0/10.0    1.050     0.350        3   
-10.10.0.6                Up        xe-0/0/11.0    1.050     0.350        3   
-
-2 sessions, 2 clients
-Cumulative transmit rate 5.7 pps, cumulative receive rate 5.7 pps
-
-{master:0}[edit]
-root@core01# 
+{master:0}
+root@core01> 
 
 ```
 
 core02
 
 ```
-root@core02# run show bgp summary group UNDErLAY   
+root@core02> show bgp summary 
 Groups: 1 Peers: 2 Down peers: 0
 Table          Tot Paths  Act Paths Suppressed    History Damp State    Pending
 inet.0               
                        2          2          0          0          0          0
 Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn State|#Active/Received/Accepted/Damped...
-10.10.0.1             65500         65         64       0       0       28:03 1/1/1/0              0/0/0/0
-10.10.0.5             65500         56         54       0       0       23:49 1/1/1/0              0/0/0/0
+10.10.1.1             65501         13         12       0       1        4:11 1/1/1/0              0/0/0/0
+10.10.1.5             65501         13         12       0       1        4:07 1/1/1/0              0/0/0/0
 
-{master:0}[edit]
-root@core02# run show bfd session brief 
-                                                  Detect   Transmit
-Address                  State     Interface      Time     Interval  Multiplier
-10.10.0.1                Up        xe-0/0/10.0    1.050     0.350        3   
-10.10.0.5                Up        xe-0/0/11.0    1.050     0.350        3   
-
-2 sessions, 2 clients
-Cumulative transmit rate 5.7 pps, cumulative receive rate 5.7 pps
-
-{master:0}[edit]
-root@core02# 
+{master:0}
+root@core02> 
 ```
 
 Moving on and validate the route received
@@ -203,41 +183,41 @@ Moving on and validate the route received
 core01
 
 ```
-root@core01> show route table inet.0 10.10.1.2 
+root@core01> show route 10.10.0.2 
 
 inet.0: 8 destinations, 9 routes (8 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
 
-10.10.1.2/32       *[BGP/170] 00:00:20, localpref 100
-                      AS path: I, validation-state: unverified
-                    > to 10.10.0.2 via xe-0/0/10.0
-                      to 10.10.0.6 via xe-0/0/11.0
-                    [BGP/170] 00:00:20, localpref 100
-                      AS path: I, validation-state: unverified
-                    > to 10.10.0.6 via xe-0/0/11.0
+10.10.0.2/32       *[BGP/170] 00:03:16, localpref 100
+                      AS path: 65502 I, validation-state: unverified
+                    > to 10.10.1.2 via xe-0/0/10.0
+                      to 10.10.1.6 via xe-0/0/11.0
+                    [BGP/170] 00:04:55, localpref 100
+                      AS path: 65502 I, validation-state: unverified
+                    > to 10.10.1.6 via xe-0/0/11.0
 
 {master:0}
-root@core01>
+root@core01> 
 ```
 
 core02
 
 ```
-root@core02> show route table inet.0 10.10.1.1 
+root@core02> show route 10.10.0.1    
 
 inet.0: 8 destinations, 9 routes (8 active, 0 holddown, 0 hidden)
 + = Active Route, - = Last Active, * = Both
 
-10.10.1.1/32       *[BGP/170] 00:01:05, localpref 100
-                      AS path: I, validation-state: unverified
-                    > to 10.10.0.1 via xe-0/0/10.0
-                      to 10.10.0.5 via xe-0/0/11.0
-                    [BGP/170] 00:01:05, localpref 100
-                      AS path: I, validation-state: unverified
-                    > to 10.10.0.5 via xe-0/0/11.0
+10.10.0.1/32       *[BGP/170] 00:03:22, localpref 100
+                      AS path: 65501 I, validation-state: unverified
+                    > to 10.10.1.1 via xe-0/0/10.0
+                      to 10.10.1.5 via xe-0/0/11.0
+                    [BGP/170] 00:05:13, localpref 100
+                      AS path: 65501 I, validation-state: unverified
+                    > to 10.10.1.5 via xe-0/0/11.0
 
 {master:0}
-root@core02> 
+root@core02>
 ```
 
 That's for the underlay setup for this EVPN-VxLAN section. We will continue with the overlay setup in the next lab.
