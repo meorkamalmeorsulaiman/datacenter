@@ -2,11 +2,11 @@
 
 ## Introduction
 
-This will be the notes for EVPN-VxLAN learning. EVPN-VxLAN is a separate technology. EVPN is a subset of l2vpn which carries ethernet information while is an overlay ethernet technology that encapsulate ethernet into a UDP and send it over an IP. Enough, hebat tak aku sembang.
+This will be the notes for EVPN-VxLAN learning. EVPN-VxLAN is a separate technology. EVPN is a subset of l2vpn which carries ethernet information which is an overlay ethernet technology that encapsulate ethernet into a UDP and send it over an IP.
 
 So, let get things simpler. Typical network that run's ethernet will need to a segment or network which is called a LAN. There is additional value which we usually call tag or 802.1q tag. This tag allow us to separate or isolate network into VLAN. So you separate a network using a tag. However, VLAN is just a broadcast domain that never get routed. At some point you want to extend your network with the same IP scheme.
 
-What we usually do is to trunk it, which extending the broadcast area. It is not good, why? Create unnecessary traffic, the reliance of STP to avoid loop. It takes time or a guaranteed time of convergence for STP to put it back into forwarding state or if it in complete loop. One of your switchport will be in blocking state. Rugi boss!! There are more reasons but we keep simple.
+What we usually do is to trunk it, which extending the broadcast area. It is not good, why? Create unnecessary traffic, the reliance of STP to avoid loop. It takes time or a guaranteed time of convergence for STP to put it back into forwarding state or if it in complete loop. One of your switchport will be in blocking state. There are more reasons but we keep simple.
 
 So what VxLAN do here? It allow us to transport the same VLAN across routed link. Give an example, if you have 2 houses and both want to use `192.168.100.0/24` subnet. You can build a VxLAN tunnel between your house across the internet and terminate on your broadband.
 
